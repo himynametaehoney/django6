@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block con %}
+
+    <h1><b>번 . 역 . 기</b></h1>
+
+
+
+
+    <form method="post" name="transForm">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-5">
+                <textarea name="bf" class="form-control" placeholder="번역할 문장 입력해주삼" style="height: 200px;">{{ bf }}</textarea>
+            </div>
+
+
+            <div class="col-sm-2 text-center mt-2">
+                <select class="form-selct form-select-sm" name="fr">
+                    {% for code, name in ndict.items %}
+                        <option value="{{code}}" {% if fr %} {% if fr == code %} selected {% endif %}{% else %}{% if code == "ko" %}selected{% endif %} {% endif %}>{{ name|upper }}</option>
+                    {% endfor %}
+                </select><br>
+
+                <button type="button" onclick="check()" class="btn btn-dark mt-3">번역온!!</button><br>
+
+                <select class="form-selct form-select-sm mt-3" name="to">
+                    {% for code, name in ndict.items %}
+                        <option value="{{code}}" {% if to %} {% if to == code %} selected {% endif %}{% else %}{% if code == "en" %}selected{% endif %} {% endif %}>{{ name|upper }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-5 text-end">
+                <textarea class="form-control" disabled style="height: 200px;">{{ af }}</textarea>
+            </div>
+        </div>
+    </form>
+
+
+    <a href="/media/noimage.png" download><button>다운로드</button></a>
+
+
+    <script>
+        function check(){
+            t = document.transForm;
+            if(!t.bf.value){
+                alert("번역할 문장을 넣어야 하든..말든,,하자너,,ㅠㅠ");
+            }else if(t.fr.value == t.to.value){
+                alert("서로 다른 언어 코드를 입력해주세요 ㅠㅠ")
+            }else{
+                t.submit();
+            }
+        }
+    </script>
+
+
+
+
+{% endblock %}
